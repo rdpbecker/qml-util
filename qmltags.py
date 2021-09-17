@@ -148,8 +148,8 @@ def numForwardBraces(line):
 
 def numBackBraces(line):
     count = 0
-    while line.find("{") > -1:
-        line = line[:line.find("{")] + line[line.find("{")+1:]
+    while line.find("}") > -1:
+        line = line[:line.find("}")] + line[line.find("}")+1:]
         count = count + 1
     return count
 
@@ -158,7 +158,7 @@ def getMatchingBrace(content,start):
     for i in range(start,len(content)):
         if not len(content[i]):
             continue
-        braceCount = braceCount + numForwardBraces(content[i]) + numBackBraces(content[i])
+        braceCount = braceCount + numForwardBraces(content[i]) - numBackBraces(content[i])
         if not braceCount:
             return i, unindent(content[start+1:i])
     return len(content), content[start+1:]
