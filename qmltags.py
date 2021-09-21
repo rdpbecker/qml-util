@@ -163,17 +163,16 @@ def getMatchingBrace(content,start):
             return i, unindent(content[start+1:i])
     return len(content), content[start+1:]
 
-def findComponent(content):
-    start = -1
-    end = -1
-    for num,line in enumerate(content):
-        if "{" in line and start < 0:
-            start = num
-            continue
-        if line[0] == "}" and start >= 0:
-            end = num
-            break
-    return start, end
+def findComponents(content):
+    components = []
+    num = 0
+    while num < len(content):
+        if "{" in content[num]:
+            end, component = getMatchingBrace(content,num)
+            components.append([num,component])
+            num = end
+        num = num + 1
+    return components
 
 def createPattern(line,indents):
     new = "".join([" " for _ in range(indents*indent)]) + line.strip() 
@@ -193,17 +192,19 @@ def main():
     except:
         exit()
 
-    start,end = findComponent(file_content)
-    if end < 0:
+    components = findComponents(file_content)
+    if len(components) == 0:
         exit()
 
-    name = file_content[start][:-3]
-    pattern = createPattern(file_content[start],0)
-    idmatch = file_content[start+1].find("id:")
+    component = components[-1]
+
+    name = file_content[component[0]][:-3]
+    pattern = createPattern(file_content[component[0]],0)
+    idmatch = component[1][0].find("id:")
     if idmatch >= 0:
-        name_id = file_content[start+1][idmatch+4:].strip()
+        name_id = component[1][0][idmatch+4:].strip()
         name = name + " [" + name_id + "]"
-    root = Component(name,filename,pattern,unindent(file_content[start+1:end]))
+    root = Component(name,filename,pattern,component[1])
     root.parse()
     print(root)
     root.printChildren()
