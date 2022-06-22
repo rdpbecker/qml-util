@@ -18,7 +18,7 @@ class PropType(BaseTypes.Match):
             Property(\
                 propmatch.group(2)+" : "+propmatch.group(1),\
                 self.component.file,\
-                util.createPattern(line,len(self.component.hier)+1),\
+                self.index+self.component.index,\
                 self.component.hier+[self.component.name]
             )
         )
@@ -26,5 +26,5 @@ class PropType(BaseTypes.Match):
         return True
 
 class Property(BaseTypes.HierTag):
-    def __init__(self,name,file,pattern,hier):
-        super().__init__(name,file,pattern,hier,"p")
+    def __init__(self,name,file,index,hier):
+        super().__init__(name,file,index,hier,"p")

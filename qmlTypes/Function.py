@@ -20,7 +20,7 @@ class FuncType(BaseTypes.Match):
             Function(\
                 funcmatch.group(1),\
                 self.component.file,\
-                util.createPattern(line,len(self.component.hier)+1),\
+                self.index+self.component.index,\
                 self.component.hier+[self.component.name]\
             )\
         )
@@ -28,5 +28,5 @@ class FuncType(BaseTypes.Match):
         return True
 
 class Function(BaseTypes.HierTag):
-    def __init__(self,name,file,pattern,hier):
-        super().__init__(name,file,pattern,hier,"f")
+    def __init__(self,name,file,index,hier):
+        super().__init__(name,file,index,hier,"f")

@@ -19,8 +19,8 @@ class CompType(BaseTypes.Match):
                 Component(\
                     compmatch.group(1),\
                     self.component.file,\
-                    util.createPattern(line,len(self.component.hier)+1),\
                     line,\
+                    self.index+self.component.index,\
                     self.component.hier+[self.component.name]\
                 )\
             )
@@ -39,19 +39,18 @@ class CompType(BaseTypes.Match):
                 Component(\
                     name,\
                     self.component.file,\
-                    util.createPattern(line,len(self.component.hier)+1),\
                     content,\
+                    self.index+self.component.index,\
                     self.component.hier+[self.component.name]\
                 )\
             )
-
             self.index = end + 1
 
         return True
 
 class Component(BaseTypes.Tag):
-    def __init__(self,name,file,pattern,content,hier=[]):
-        super().__init__(name,file,pattern,"c")
+    def __init__(self,name,file,content,index=0,hier=[]):
+        super().__init__(name,file,index,"c")
         self.content = content
         self.hier = hier
         self.properties = []

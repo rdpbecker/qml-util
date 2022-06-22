@@ -4,10 +4,6 @@ def print_lines_debug(lines):
     for line in lines:
         print(line[:-1])
 
-def createPattern(line,indents):
-    new = "".join([" " for _ in range(indents*indent)]) + line.strip() 
-    return "/^{}$/;\"".format(new)
-
 def unindent(content):
     return [line[indent:] for line in content]
 

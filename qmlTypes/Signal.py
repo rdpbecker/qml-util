@@ -18,7 +18,7 @@ class SignalType(BaseTypes.Match):
             Signal(\
                 signalmatch.group(1),\
                 self.component.file,\
-                util.createPattern(line,len(self.component.hier)+1),\
+                self.index+self.component.index,\
                 self.component.hier+[self.component.name]\
             )\
         )
@@ -26,5 +26,5 @@ class SignalType(BaseTypes.Match):
         return True
 
 class Signal(BaseTypes.HierTag):
-    def __init__(self,name,file,pattern,hier):
-        super().__init__(name,file,pattern,hier,"s")
+    def __init__(self,name,file,index,hier):
+        super().__init__(name,file,index,hier,"s")

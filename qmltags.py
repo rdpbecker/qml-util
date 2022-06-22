@@ -59,12 +59,11 @@ def main():
     component = components[-1]
 
     name = file_content[component[0]][:-3]
-    pattern = util.createPattern(file_content[component[0]],0)
     idmatch = component[1][0].find("id:")
     if idmatch >= 0:
         name_id = component[1][0][idmatch+4:].strip()
         name = name + " [" + name_id + "]"
-    root = Component.Component(name,filename,pattern,component[1])
+    root = Component.Component(name,filename,component[1],component[0])
     root.parse()
     print(root)
     root.printChildren()

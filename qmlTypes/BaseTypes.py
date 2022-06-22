@@ -9,19 +9,19 @@ class Match:
 
 class Tag:
     """Base class representing a ctags Tag."""
-    def __init__(self, name, file, pattern, kind):
+    def __init__(self, name, file, index, kind):
         self.name = name
         self.file = file
-        self.pattern = pattern
+        self.index = index + 1
         self.kind = kind
 
     def __str__(self):
         """Tab-separated textual representation of the tag."""
-        return "\t".join([self.name, self.file, self.pattern, self.kind])
+        return "\t".join([self.name, self.file+";\"", self.kind, "line:"+str(self.index)])
 
 class HierTag(Tag):
-    def __init__(self,name,file,pattern,hier,tag):
-        super().__init__(name,file,pattern,tag)
+    def __init__(self,name,file,index,hier,tag):
+        super().__init__(name,file,index,tag)
         self.hier = hier
 
     def __str__(self):
