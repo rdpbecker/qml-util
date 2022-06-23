@@ -14,6 +14,7 @@ class PropType(BaseTypes.Match):
         if not propmatch:
             return False
 
+        end, _ = util.getMatchingBrace(self.component.content,self.index)
         self.component.properties.append(\
             Property(\
                 propmatch.group(2)+" : "+propmatch.group(1),\
@@ -22,7 +23,7 @@ class PropType(BaseTypes.Match):
                 self.component.hier+[self.component.name]
             )
         )
-        self.index = self.index + 1
+        self.index = end + 1
         return True
 
 class Property(BaseTypes.HierTag):

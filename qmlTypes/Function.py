@@ -15,7 +15,6 @@ class FuncType(BaseTypes.Match):
             return False
 
         end, _ = util.getMatchingBrace(self.component.content,self.index)
-
         self.component.functions.append(\
             Function(\
                 funcmatch.group(1),\
