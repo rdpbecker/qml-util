@@ -1,4 +1,6 @@
 import util
+import re
+from qmlTypes import Component
 
 class Match:
     def __init__(self,component,index):
@@ -43,6 +45,56 @@ class BasicMatch(Match):
         if not self.match:
             return ""
         return self._name()
+
+class MaybeCompMatch(BasicMatch):
+    def __init__(self,component,index):
+        super().__init__(component,index)
+        self.regex = None
+        self.kind = ""
+
+    def attemptMatch(self):
+        if not self.regex:
+            return False
+
+        line = self.component.content[self.index]
+        self.match = self.regex.match(line)
+        if not self.match:
+            return False
+
+        comp_regex = re.compile(r":\s*(\w+)\s*{$")
+        comp_match = comp_regex.search(line)
+        end, content = util.getMatchingBrace(self.component.content,self.index)
+
+        if comp_match:
+            self.component.components.append(\
+                Component.Component(\
+                    comp_match.group(1) + " [" + self.tag_name() + "]",\
+                    self.component.file,\
+                    content,\
+                    self.index+self.component.index,\
+                    self.component.hier+[self.component.name]\
+                )\
+            )
+        else:
+            self.component.properties.append(\
+                HierTag(\
+                    self.name(),\
+                    self.component.file,\
+                    self.index+self.component.index,\
+                    self.component.hier+[self.component.name],\
+                    self.kind\
+                )\
+            )
+        self.index = end + 1
+        return True
+
+    def _tag_name(self):
+        return ""
+
+    def tag_name(self):
+        if not self.match:
+            return ""
+        return self._tag_name()
 
 class Tag:
     """Base class representing a ctags Tag."""
