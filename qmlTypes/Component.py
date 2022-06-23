@@ -1,6 +1,13 @@
 import re
 import util
-from qmlTypes import BaseTypes, Property, Signal, Function, Component
+from qmlTypes import \
+    BaseTypes, \
+    Property, \
+    Signal, \
+    Function, \
+    Component, \
+    InlineProperty, \
+    InlineConnection
 
 class CompType(BaseTypes.Match):
     def __init__(self,component,index):
@@ -66,7 +73,15 @@ class Component(BaseTypes.Tag):
         matcher = BaseTypes.Match(self,0)
         while index < len(self.content):
             handled = False
-            for tagType in [Property.PropType,Signal.SignalType,Function.FuncType,CompType]:
+            for tagType in \
+                [\
+                    Property.PropType,\
+                    InlineConnection.InlineConnType,\
+                    InlineProperty.InlinePropType,\
+                    Signal.SignalType,\
+                    Function.FuncType,\
+                    CompType\
+                ]:
                 matcher = tagType(self,index)
                 if (matcher.attemptMatch()):
                     handled = True

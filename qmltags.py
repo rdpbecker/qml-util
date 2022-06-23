@@ -13,7 +13,7 @@ file anywhere and add the following to your .vimrc:
 
 let g:tagbar_type_qml = {
         \\   'ctagstype':'qml'
-        \\ , 'kinds':['c:component', 'f:function', 'p:property', 's:signal']
+        \\ , 'kinds':['c:component', 'f:function', 'p:property', 's:signal', 'q:connection']
         \\ , 'ctagsbin':'~/Projects/qmltags/qmltags.py'
         \\ , 'ctagsargs':''
         \\ , 'sro':','
@@ -21,8 +21,6 @@ let g:tagbar_type_qml = {
         \\ , 'scope2kind':{'component':'c'}
         \\ }
 """
-indent = 4
-
 import sys
 import util
 from qmlTypes import Component
