@@ -1,31 +1,11 @@
 import re
-import util
 from qmlTypes import BaseTypes
 
-class FuncType(BaseTypes.Match):
+class FuncType(BaseTypes.BasicMatch):
     def __init__(self,component,index):
         super().__init__(component,index)
         self.regex = re.compile(r"^\s*function\s(.*)")
+        self.kind = "f"
 
-    def attemptMatch(self):
-        line = self.component.content[self.index]
-        funcmatch = self.regex.match(line)
-
-        if not funcmatch:
-            return False
-
-        end, _ = util.getMatchingBrace(self.component.content,self.index)
-        self.component.functions.append(\
-            Function(\
-                funcmatch.group(1),\
-                self.component.file,\
-                self.index+self.component.index,\
-                self.component.hier+[self.component.name]\
-            )\
-        )
-        self.index = end + 1
-        return True
-
-class Function(BaseTypes.HierTag):
-    def __init__(self,name,file,index,hier):
-        super().__init__(name,file,index,hier,"f")
+    def _name(self):
+        return self.match.group(1)

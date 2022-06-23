@@ -1,3 +1,5 @@
+import util
+
 class Match:
     def __init__(self,component,index):
         self.component = component
@@ -5,7 +7,42 @@ class Match:
         self.match = None
 
     def attemptMatch(self):
-        pass
+        return False
+
+class BasicMatch(Match):
+    def __init__(self,component,index):
+        super().__init__(component,index)
+        self.regex = None
+        self.kind = ""
+
+    def attemptMatch(self):
+        if not self.regex:
+            return False
+
+        self.match = self.regex.match(self.component.content[self.index])
+        if not self.match:
+            return False
+
+        end, _ = util.getMatchingBrace(self.component.content,self.index)
+        self.component.properties.append(\
+            HierTag(\
+                self.name(),\
+                self.component.file,\
+                self.index+self.component.index,\
+                self.component.hier+[self.component.name],\
+                self.kind\
+            )\
+        )
+        self.index = end + 1
+        return True
+
+    def _name(self):
+        return ""
+
+    def name(self):
+        if not self.match:
+            return ""
+        return self._name()
 
 class Tag:
     """Base class representing a ctags Tag."""

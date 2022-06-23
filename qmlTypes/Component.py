@@ -54,7 +54,6 @@ class Component(BaseTypes.Tag):
         self.content = content
         self.hier = hier
         self.properties = []
-        self.functions = []
         self.components = []
     
     def __str__(self):
@@ -84,8 +83,6 @@ class Component(BaseTypes.Tag):
     def printChildren(self,recurse=True):
         for prop in self.properties:
             print(prop)
-        for func in self.functions:
-            print(func)
         for comp in self.components:
             print(comp)
             if (recurse):
